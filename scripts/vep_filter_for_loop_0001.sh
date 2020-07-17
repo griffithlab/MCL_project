@@ -11,7 +11,7 @@ do
 	VCF=$(find . -type f -name 'annotated_filtered.vcf.gz' | sed 's/\.\///')	
 
 	#Grab .vep file.
-	VEP=$(find . -type f -name 'TWGE-08-0075-[0-9][0-9][0-9].vep' | sed 's/\.\///')
+	VEP=$(ls | egrep '^TWGE-08-0075-[0-9][0-9][0-9].vep$|^TWGE-08-0075-[0-9][0-9][0-9][0-9].vep$')
 
 	#Paste the two together.
 	paste <(zcat "$VCF" | sed -re '/^#|^##/d') <(cat "$VEP" | sed -re '/^#|^##/d') > pasted_"$samplename".vep
