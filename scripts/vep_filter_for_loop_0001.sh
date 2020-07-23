@@ -1,21 +1,21 @@
 #Loop through all TWGE* directories.
-#for directory in /gscmnt/gc2547/griffithlab/bvli/MCL/filtering_analysis_gnomad_0.01/TWGE*
-#do
+for directory in /gscmnt/gc2547/griffithlab/bvli/MCL/filtering_analysis_gnomad_0.01/TWGE*
+do
 	#Change directoiry.
-#	cd "$directory"	
+	cd "$directory"	
 
 	#Grab sample name.
-#	samplename=$(pwd | sed 's/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\///')
+	samplename=$(pwd | sed 's/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\///')
 
 	#Grab annotated.filtered.vcf.gz.
-#	VCF=$(find . -type f -name 'annotated_filtered.vcf.gz' | sed 's/\.\///')	
+	VCF=$(find . -type f -name 'annotated_filtered.vcf.gz' | sed 's/\.\///')	
 
 	#Grab .vep file.
-#	VEP=$(ls | egrep '^TWGE-08-0075-[0-9][0-9][0-9].vep$|^TWGE-08-0075-[0-9][0-9][0-9][0-9].vep$')
+	VEP=$(ls | egrep '^TWGE-08-0075-[0-9][0-9][0-9].vep$|^TWGE-08-0075-[0-9][0-9][0-9][0-9].vep$')
 
 	#Paste the two together.
-#	paste <(zcat "$VCF" | sed -re '/^#|^##/d') <(cat "$VEP" | sed -re '/^#|^##/d') > pasted_"$samplename".vep
-#done
+	paste <(zcat "$VCF" | sed -re '/^#|^##/d') <(cat "$VEP" | sed -re '/^#|^##/d') > pasted_"$samplename".vep
+done
 
 #Loop through all TWGE* directories.
 for directory in /gscmnt/gc2547/griffithlab/bvli/MCL/filtering_analysis_gnomad_0.01/TWGE* 
