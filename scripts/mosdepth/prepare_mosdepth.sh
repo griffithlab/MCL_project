@@ -1,0 +1,18 @@
+#Create MCL_MOSDEPTH.sh.
+touch /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/run_scripts/MCL_MOSDEPTH.sh 
+
+#Loop through applicable sample directories.
+for directory in /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1031 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-009 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-390 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-263 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-233 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-910 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-519 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1070 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-411 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-040 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-881 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-187 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1122 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-362 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1441 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-526 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1497 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-686 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-355 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1174 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1369 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-496 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-1027 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-886 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-724 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-115 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-602 /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/samples/TWGE-08-0075-930
+do
+	#Change directory.
+	cd $directory
+
+	#Grab current sample.
+	currentsample=$(pwd | sed 's/^[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\/[^/]*\///')
+
+	#Echo normal mosdepth command.
+        echo "bsub -g /mclmosdepth -oo "$directory"/logs/"$currentsample"_mosdepth.log -M 650000000 -R 'select[mem>65000] span[hosts=1] rusage[mem=65000]' -q research-hpc -a 'docker(quay.io/biocontainers/mosdepth:0.2.4--he527e40_0)' mosdepth --by /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/reference_files/MCL_intervals.bed --thresholds 20,30,50,100,150,200,250,300 "$directory"/"$currentsample"_normal_out "$directory"/normal.bam.cram" >> /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/run_scripts/MCL_MOSDEPTH.sh	
+
+	#Echo tumor mosdepth command.
+	echo "bsub -g /mclmosdepth -oo "$directory"/logs/"$currentsample"_mosdepth.log -M 650000000 -R 'select[mem>65000] span[hosts=1] rusage[mem=65000]' -q research-hpc -a 'docker(quay.io/biocontainers/mosdepth:0.2.4--he527e40_0)' mosdepth --by /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/reference_files/MCL_intervals.bed --thresholds 20,30,50,100,150,200,250,300 "$directory"/"$currentsample"_tumor_out "$directory"/tumor.bam.cram" >> /gscmnt/gc2547/griffithlab/matthewmosior/MCL_mosdepth/run_scripts/MCL_MOSDEPTH.sh
+done
