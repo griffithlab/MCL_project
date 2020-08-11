@@ -20,5 +20,5 @@ do
 	done < <(cat "$currentsample"_manually_reviewed_variants_final.mgibed | cut -f 6 | uniq | rev | sed 's/:/|/' | rev)
 
 	#STEP 5: Grab lines from "$currentsample"_manually_reviewed_variants_final.vep.
-	cat "$currentsample"_manually_reviewed_variants_final.vep | cut -f 12,18 | gawk '{split($1,a,"_"); split(a[3],b,"/"); print a[1] "\t" a[2] "\t" b[1] "\t" b[2] "\t" $2}' > "$currentsample"_manually_reviewed_variants_FINAL.vep
+	cat "$currentsample"_manually_reviewed_variants_final.vep | cut -f 12,18,25 | gawk '{split($1,a,"_"); split(a[3],b,"/"); split($3,c,";"); for(i=1;i<=length(c);i++) {split(c[i],d,"="); if(d[1] == "SYMBOL") {symbol=d[2]}} print a[1] "\t" a[2] "\t" b[1] "\t" b[2] "\t" $2 "\t" symbol}' > "$currentsample"_manually_reviewed_variants_FINAL.vep
 done
